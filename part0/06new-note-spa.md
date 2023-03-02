@@ -1,3 +1,4 @@
+```mermaid
 sequenceDiagram
     participant browser
     participant server
@@ -10,3 +11,4 @@ sequenceDiagram
     deactivate server
 
     Note to right of browser: The page does not reload
+```
