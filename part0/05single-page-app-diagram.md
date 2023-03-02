@@ -18,7 +18,7 @@ sequenceDiagram
     server-->>browser: JavaScript file
     deactivate server
 
-    Note to right of browser: spa.js requests data.json
+    Note right of browser: spa.js requests data.json
 
     browser->>server: GET https://studies.cs.helsinki.fi/exampleapp/data.json
     activate server
