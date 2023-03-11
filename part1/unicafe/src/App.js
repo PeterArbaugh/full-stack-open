@@ -6,47 +6,9 @@ const Button = ({ handleClick, text }) => (
   </button>
 )
 
-const Display = ({ text, value }) => (
+const StatisticLine = ({ text, value }) => (
   <div>{text} {value}</div>
 )
-
-const Average = ({ scores }) => {
-
-  console.log('scores', scores)
-  console.log('scores length', scores.length)
-
-  if (scores.length === 0) {
-    return (
-      <div>No scores available</div>
-    )
-  } else {
-    let sum = scores.reduce((total, num) => total + num)
-    console.log('sum', sum)
-    console.log('length', scores.length)
-  
-    let average = sum / scores.length
-
-    return (
-      <Display text='Average' value={average} />
-    )
-  }
-}
-
-const Postive = ({ good, total }) => {
-
-  if (total === 0) {
-    return (
-      <div>No scores available</div>
-    )
-  } else {
-    let percentPositive = good / total
-
-    return (
-      <Display text='% Positive' value={percentPositive} />
-    )
-  }
-
-}
 
 const Statistics = (props) => {
   const all = props.good + props.bad + props.neutral
@@ -59,19 +21,22 @@ const Statistics = (props) => {
       </div>
       
     )
-  } else {
-    return (
-      <div>
-        <h2>Statistics</h2>
-        <Display text='Good' value={props.good} />
-        <Display text='Neutral' value={props.neutral} />
-        <Display text='Bad' value={props.bad} />
-        <Display text='All' value={all} />
-        <Average scores={props.allScores} />
-        <Postive good={props.good} total={props.good + props.bad + props.neutral} />
-      </div>
+  } 
+  
+  const average = props.allScores.reduce((total, num) => total + num) / props.allScores.length
+  const positive = props.good / all
+  
+  return (
+    <div>
+      <h2>Statistics</h2>
+      <StatisticLine text='Good' value={props.good} />
+      <StatisticLine text='Neutral' value={props.neutral} />
+      <StatisticLine text='Bad' value={props.bad} />
+      <StatisticLine text='All' value={all} />
+      <StatisticLine text='Average' value={average} />
+      <StatisticLine text='% Positive' value={positive} />
+    </div>
     )
-  }
 }
 
 const App = () => {
