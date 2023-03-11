@@ -49,17 +49,29 @@ const Postive = ({ good, total }) => {
 }
 
 const Statistics = (props) => {
-  return (
-    <div>
-      <h2>Statistics</h2>
-      <Display text='Good' value={props.good} />
-      <Display text='Neutral' value={props.neutral} />
-      <Display text='Bad' value={props.bad} />
-      <Display text='All' value={props.good + props.bad + props.neutral} />
-      <Average scores={props.allScores} />
-      <Postive good={props.good} total={props.good + props.bad + props.neutral} />
-    </div>
-  )
+  const all = props.good + props.bad + props.neutral
+  
+  if (all === 0) {
+    return (
+      <div>
+        <h2>Statistics</h2>
+        <div>No feedback given</div>
+      </div>
+      
+    )
+  } else {
+    return (
+      <div>
+        <h2>Statistics</h2>
+        <Display text='Good' value={props.good} />
+        <Display text='Neutral' value={props.neutral} />
+        <Display text='Bad' value={props.bad} />
+        <Display text='All' value={all} />
+        <Average scores={props.allScores} />
+        <Postive good={props.good} total={props.good + props.bad + props.neutral} />
+      </div>
+    )
+  }
 }
 
 const App = () => {
