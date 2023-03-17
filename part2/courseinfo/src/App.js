@@ -34,7 +34,6 @@ const Content = ({ parts }) => {
   )
 }
 
-
 const Course =({ course }) => (
   course.map(course => 
     <div key={course.id}>
