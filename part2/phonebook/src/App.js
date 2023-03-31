@@ -4,7 +4,6 @@ const App = () => {
   const [persons, setPersons] = useState([
     { 
       name: 'Arto Hellas',
-      id: 1 
     }
   ]) 
   const [newName, setNewName] = useState('')
@@ -16,12 +15,18 @@ const App = () => {
 
   const addPerson = (event) => {
     event.preventDefault()
-    const personObject = {
-      name: newName,
-      id: persons.length + 1
+    console.log(persons.includes(newName))
+    if (persons.some(obj => obj.name === newName)){
+      alert(`${newName} is already included in the phonebook.`)
+      setNewName('')
+    } else {
+      const personObject = {
+        name: newName,
+      }
+      setPersons(persons.concat(personObject))
+      setNewName('')
+      console.log(persons)
     }
-    setPersons(persons.concat(personObject))
-    setNewName('')
   }
 
   const Person = ({ person }) => {
@@ -47,7 +52,7 @@ const App = () => {
       <h2>Numbers</h2>
       <ul>
         {persons.map(person =>
-          <Person key={person.id} person={person} /> 
+          <Person key={person.name} person={person} /> 
           )}
 
       </ul>
