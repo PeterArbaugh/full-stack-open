@@ -85,9 +85,26 @@ const App = () => {
   const addPerson = (event) => {
     event.preventDefault()
     console.log(persons.includes(newName))
+    // Check if the name is already in the array
     if (persons.some(obj => obj.name === newName)){
-      alert(`${newName} is already included in the phonebook.`)
-      setNewName('')
+      // confirm the update
+      if (window.confirm(`${newName} is already added to the phonebook. Replace the old number?`)) {
+        // get the object that we want to update
+        const currentPerson = persons.find(p => p.name === newName)
+        // create the updated object
+        const updatedPerson = {...currentPerson, number: newNumber}
+        // make the call via our personService
+        personService
+          .update(currentPerson.id, updatedPerson)
+          .then(returnedPerson => {
+            // with the returned object, iterate through the array
+            // if the id does not match, leave the item as is
+            // if the id matches, update with the returned object
+            setPersons(persons.map(p => p.id !== returnedPerson.id ? p : returnedPerson))
+            setNewName('')
+            setNewNumber('')
+          })
+      }
     } else {
       const personObject = {
         name: newName,
