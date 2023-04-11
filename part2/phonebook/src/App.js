@@ -50,12 +50,30 @@ const NumberList = ({ personsToShow, deletePerson }) => (
 </ul>
 )
 
+const Notification = ({ message }) => {
+  if (message === null) {
+    return null
+  }
+
+  const notificationStyle = {
+    color: 'green',
+    fontStyle: 'italic',
+    marginBottom: 30
+  }
+
+  return (
+    <div style={notificationStyle}>
+      {message}
+    </div>
+  )
+}
 
 const App = () => {
   const [persons, setPersons] = useState([]) 
   const [newName, setNewName] = useState('')
   const [newNumber, setNewNumber] = useState('')
   const [filterText, setFilterText] = useState('')
+  const [message, setMessage] = useState(null)
 
   useEffect(() => {
     console.log('effect')
@@ -115,11 +133,19 @@ const App = () => {
         .create(personObject)
         .then(returnedPerson => {
           setPersons(persons.concat(returnedPerson))
+          publishMessage(`${newName} was added to the phonebook.`)
           setNewName('')
           setNewNumber('')
           console.log(persons)
         })
     }
+  }
+
+  const publishMessage = (message) => {
+    setMessage(message)
+    setTimeout(() => {
+      setMessage(null)
+    }, 5000)
   }
 
   const deletePerson = (id) => {
@@ -137,7 +163,8 @@ const App = () => {
 
   return (
     <div>
-      <h2>Phonebook</h2>
+      <h1>Phonebook</h1>
+      <Notification message={message} />
       <Search 
         value={filterText}
         change={handleFilterChange}
