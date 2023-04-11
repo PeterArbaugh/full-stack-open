@@ -122,6 +122,9 @@ const App = () => {
             setNewName('')
             setNewNumber('')
           })
+          .catch(error => {
+            publishMessage(`${currentPerson.name} was not found. Please try again later.`)
+          })
       }
     } else {
       const personObject = {
