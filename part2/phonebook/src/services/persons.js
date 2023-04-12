@@ -20,7 +20,7 @@ const deletePerson = (id, name) => {
     if (window.confirm(`Do you really want to delete ${name}?`)) {
         const request = axios.delete(`${baseUrl}/${id}`)
         console.log(name, "deleted")
-        return request.then(response => response.data)
+        return request.then(response => response.status)
     }
 }
 
