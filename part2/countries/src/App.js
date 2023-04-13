@@ -11,12 +11,32 @@ const Search = (props) => (
   </>
 )
 
-const Country = ({name}) => {
-  return (
-    <li>
-      {name.common}
-    </li>
-  )
+const Country = ({country}) => {
+  const [showDetails, setShowDetails] = useState(false)
+  console.log('showDetails', showDetails)
+
+  if (showDetails) {
+    return (
+      <>
+      <li>
+        {country.name.common}
+        <button onClick={() => setShowDetails(!showDetails)}>
+          Hide
+        </button>
+      </li>
+      <CountryDetails country={country}/>
+      </>
+    )
+  } else {
+    return (
+      <li>
+        {country.name.common}
+        <button onClick={() => setShowDetails(!showDetails)}>
+          Show
+        </button>
+      </li>
+    )
+  }
 }
 
 const CountryDetails = ({country}) => {
@@ -47,7 +67,10 @@ const CountryDisplay = (props) => {
     return (
       <ul>
         {props.countries.map(country =>
-          <Country key={country.name.common} name={country.name} />
+          <Country 
+            key={country.name.common} 
+            country={country} 
+            showDetails={() => props.showDetails(country)} />
           )}
       </ul>
     )
@@ -75,6 +98,11 @@ const App = () => {
     setFilterText(event.target.value)
   }
 
+  const showDetails = (country) => {
+    console.log('show country', country)
+    setCountries([country])
+  }
+
   const countriesToShow = (filterText === '')
     ? []
     : countries.filter((country) => country.name.common.includes(filterText))
@@ -83,7 +111,10 @@ const App = () => {
   return (
     <div>
       <Search value={filterText} change={handleFilterChange}/>
-      <CountryDisplay countries={countriesToShow} />
+      <CountryDisplay 
+        countries={countriesToShow} 
+        showDetails={showDetails}
+        />
     </div>
   );
 }
