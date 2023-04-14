@@ -1,6 +1,8 @@
 import { useState, useEffect } from "react";
 import axios from 'axios'
 
+const owAPIKey = process.env.REACT_APP_API_KEY
+
 const Search = (props) => (
   <>
     Search countries: 
@@ -41,6 +43,28 @@ const Country = ({country}) => {
 
 const CountryDetails = ({country}) => {
   const langArray = Object.entries(country.languages)
+  const capLat = country.capitalInfo.latlng[0]
+  console.log('lat', capLat)
+  const capLng = country.capitalInfo.latlng[1]
+  console.log('Lng', capLng)
+
+  const [weather, setWeather] = useState({})
+
+  useEffect(() => {
+    console.log('effect - weather')
+    axios
+      .get(`https://api.openweathermap.org/data/2.5/weather?lat=${capLat}&lon=${capLng}&appid=${owAPIKey}&units=metric`)
+      .then(response => {
+        setWeather({
+          "temperature": response.data.main.temp,
+          "current": response.data.weather[0].main,
+          "icon": response.data.weather[0].icon,
+          "alt": response.data.weather[0].description
+        })
+
+      })
+  }, [capLat, capLng])
+  console.log(weather)
   
   return (
     <>
@@ -54,6 +78,12 @@ const CountryDetails = ({country}) => {
         )}
         </ul>
       <img src={country.flags.png} alt={country.flags.alt}></img>
+      <h3>Weather in {country.capital}</h3>
+      <ul>
+        <li>Temperature: {weather.temperature}</li>
+        <li>Current conditions: {weather.current}</li>
+      </ul>
+      <img src={"https://openweathermap.org/img/wn/" + weather.icon + "@2x.png"} alt={weather.alt}></img>
     </>
   )
 }
@@ -83,7 +113,7 @@ const App = () => {
   const [countries, setCountries] = useState([])
 
   useEffect(() => {
-    console.log('effect')
+    console.log('effect - countries')
     axios
       .get('https://restcountries.com/v3.1/all')
       .then(response => {
